@@ -23,14 +23,16 @@ DROP TABLE IF EXISTS `brownies`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `brownies` (
+  `name_brownies` varchar(20) NOT NULL,
   `no_brownies` int NOT NULL AUTO_INCREMENT,
-  `kode_brownies` varchar(5) NOT NULL,
-  `nama_brownies` varchar(20) NOT NULL,
-  `bahan_brownies` varchar(20) NOT NULL,
+  `price_brownies` int NOT NULL,
+  `id_brownies` varchar(10) NOT NULL,
+  `id_product` varchar(10) NOT NULL,
+  `taste` text,
   PRIMARY KEY (`no_brownies`),
-  KEY `kode_brownies` (`kode_brownies`),
-  CONSTRAINT `brownies_ibfk_1` FOREIGN KEY (`kode_brownies`) REFERENCES `product` (`kode_product`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  KEY `fk_brownies_product` (`id_product`),
+  CONSTRAINT `fk_brownies_product` FOREIGN KEY (`id_product`) REFERENCES `product` (`PRODUCT_ID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -50,13 +52,15 @@ DROP TABLE IF EXISTS `cake`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `cake` (
+  `name_cake` varchar(20) NOT NULL,
   `no_cake` int NOT NULL AUTO_INCREMENT,
-  `kode_cake` varchar(5) NOT NULL,
-  `nama_cake` varchar(20) NOT NULL,
-  `bahan_cake` varchar(20) NOT NULL,
+  `price_cake` int NOT NULL,
+  `id_cake` varchar(10) NOT NULL,
+  `id_product` varchar(10) NOT NULL,
+  `taste` text,
   PRIMARY KEY (`no_cake`),
-  KEY `kode_cake` (`kode_cake`),
-  CONSTRAINT `cake_ibfk_1` FOREIGN KEY (`kode_cake`) REFERENCES `dessert` (`kode_dessert`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `fk_cake_product` (`id_product`),
+  CONSTRAINT `fk_cake_product` FOREIGN KEY (`id_product`) REFERENCES `product` (`PRODUCT_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -70,56 +74,29 @@ LOCK TABLES `cake` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `dessert`
+-- Table structure for table `gaji`
 --
 
-DROP TABLE IF EXISTS `dessert`;
+DROP TABLE IF EXISTS `gaji`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `dessert` (
-  `no_dessert` int NOT NULL AUTO_INCREMENT,
-  `kode_dessert` varchar(5) NOT NULL,
-  `nama_dessert` varchar(20) NOT NULL,
-  `bahan_dessert` varchar(20) NOT NULL,
-  PRIMARY KEY (`no_dessert`),
-  KEY `kode_dessert` (`kode_dessert`),
-  CONSTRAINT `dessert_ibfk_1` FOREIGN KEY (`kode_dessert`) REFERENCES `product` (`kode_product`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `dessert`
---
-
-LOCK TABLES `dessert` WRITE;
-/*!40000 ALTER TABLE `dessert` DISABLE KEYS */;
-INSERT INTO `dessert` VALUES (7,'p01','Dadar Gulung','Tepung and Cocoa'),(8,'p02','Pie Keju','Tepung and Keju'),(9,'p03','Bapia Coklat','Tepung and Coklat');
-/*!40000 ALTER TABLE `dessert` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `gajikaryawan`
---
-
-DROP TABLE IF EXISTS `gajikaryawan`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `gajikaryawan` (
+CREATE TABLE `gaji` (
   `no_gaji` int NOT NULL AUTO_INCREMENT,
-  `kode_gaji` varchar(5) NOT NULL,
-  `nominal_gaji` int NOT NULL,
+  `gaji_karyawan` int NOT NULL,
+  `gaji_id_karyawan` varchar(10) NOT NULL,
   PRIMARY KEY (`no_gaji`),
-  UNIQUE KEY `kode_gaji` (`kode_gaji`)
+  KEY `fk_gaji_karyawan` (`gaji_id_karyawan`),
+  CONSTRAINT `fk_gaji_karyawan` FOREIGN KEY (`gaji_id_karyawan`) REFERENCES `karyawan` (`karyawan_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `gajikaryawan`
+-- Dumping data for table `gaji`
 --
 
-LOCK TABLES `gajikaryawan` WRITE;
-/*!40000 ALTER TABLE `gajikaryawan` DISABLE KEYS */;
-/*!40000 ALTER TABLE `gajikaryawan` ENABLE KEYS */;
+LOCK TABLES `gaji` WRITE;
+/*!40000 ALTER TABLE `gaji` DISABLE KEYS */;
+/*!40000 ALTER TABLE `gaji` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -131,13 +108,11 @@ DROP TABLE IF EXISTS `karyawan`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `karyawan` (
   `no_karyawan` int NOT NULL AUTO_INCREMENT,
-  `kode_karyawan` varchar(5) NOT NULL,
-  `nama_karyawan` varchar(20) NOT NULL,
-  `umur_karyawan` int NOT NULL,
-  `jenisKelamin_karyawan` varchar(10) NOT NULL,
+  `karyawan_name` varchar(20) NOT NULL,
+  `karyawan_umur` int NOT NULL,
+  `karyawan_id` varchar(10) NOT NULL,
   PRIMARY KEY (`no_karyawan`),
-  KEY `nama_karyawan` (`nama_karyawan`),
-  CONSTRAINT `karyawan_ibfk_1` FOREIGN KEY (`nama_karyawan`) REFERENCES `gajikaryawan` (`kode_gaji`) ON DELETE CASCADE ON UPDATE CASCADE
+  UNIQUE KEY `karyawan_id` (`karyawan_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -151,29 +126,31 @@ LOCK TABLES `karyawan` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `listpembayaran`
+-- Table structure for table `pembayaran`
 --
 
-DROP TABLE IF EXISTS `listpembayaran`;
+DROP TABLE IF EXISTS `pembayaran`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `listpembayaran` (
-  `no_pembayaran` int NOT NULL AUTO_INCREMENT,
-  `kode_pembayaran` varchar(5) NOT NULL,
-  `nominal_pembayaran` varchar(20) NOT NULL,
-  PRIMARY KEY (`no_pembayaran`),
-  KEY `kode_pembayaran` (`kode_pembayaran`),
-  CONSTRAINT `listpembayaran_ibfk_1` FOREIGN KEY (`kode_pembayaran`) REFERENCES `product` (`kode_product`) ON DELETE CASCADE ON UPDATE CASCADE
+CREATE TABLE `pembayaran` (
+  `NO_PEMBAYARAN` int NOT NULL AUTO_INCREMENT,
+  `NOMINAL_PEMBAYARAN` varchar(20) NOT NULL,
+  `ID_PRODUCT` varchar(10) NOT NULL,
+  `KODE_PEMBAYARAN` varchar(10) NOT NULL,
+  PRIMARY KEY (`NO_PEMBAYARAN`),
+  UNIQUE KEY `KODE_PEMBAYARAN` (`KODE_PEMBAYARAN`),
+  KEY `FK_PEMBAYARAN_PRODUCT` (`ID_PRODUCT`),
+  CONSTRAINT `FK_PEMBAYARAN_PRODUCT` FOREIGN KEY (`ID_PRODUCT`) REFERENCES `product` (`PRODUCT_ID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `listpembayaran`
+-- Dumping data for table `pembayaran`
 --
 
-LOCK TABLES `listpembayaran` WRITE;
-/*!40000 ALTER TABLE `listpembayaran` DISABLE KEYS */;
-/*!40000 ALTER TABLE `listpembayaran` ENABLE KEYS */;
+LOCK TABLES `pembayaran` WRITE;
+/*!40000 ALTER TABLE `pembayaran` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pembayaran` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -184,12 +161,12 @@ DROP TABLE IF EXISTS `product`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `product` (
-  `no_product` int NOT NULL AUTO_INCREMENT,
-  `kode_product` varchar(5) NOT NULL,
-  `jenis_product` varchar(20) NOT NULL,
-  PRIMARY KEY (`no_product`),
-  UNIQUE KEY `kode_product` (`kode_product`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `NO_PRODUCT` int NOT NULL AUTO_INCREMENT,
+  `CATEGORY_PRODUCT` text,
+  `PRODUCT_ID` varchar(10) NOT NULL,
+  PRIMARY KEY (`NO_PRODUCT`),
+  UNIQUE KEY `PRODUCT_ID` (`PRODUCT_ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -198,7 +175,6 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (1,'p01','Makanan'),(2,'p02','Makanan'),(3,'p03','Makanan'),(4,'p04','Makanan'),(5,'p05','Makanan'),(6,'p06','Makanan'),(7,'p07','Makanan'),(8,'p08','Makanan');
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -211,4 +187,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-09-18 16:58:26
+-- Dump completed on 2022-09-24  8:08:39
